@@ -102,15 +102,24 @@ public class SwiftResponsiveLabel: UILabel {
 	override public func awakeFromNib() {
 		super.awakeFromNib()
 		self.initialTextConfiguration()
-		if userInteractionEnabled {
-			self.touchHandler = TouchHandler(responsiveLabel: self)
-		}
 	}
 
 	override public func layoutSubviews() {
 		super.layoutSubviews()
 		self.textKitStack.resizeTextContainer(self.bounds.size)
 	}
+    
+    override public var userInteractionEnabled: Bool {
+        didSet {
+            if userInteractionEnabled {
+                if self.touchHandler == nil {
+                    self.touchHandler = TouchHandler(responsiveLabel: self)
+                }
+            } else {
+                self.touchHandler = nil
+            }
+        }
+    }
 
 	// MARK: Public methods
 
